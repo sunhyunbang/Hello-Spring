@@ -24,7 +24,7 @@ class MemberServiceTest {
     Long saveId = memberService.join(member);
 
     //then
-    //Optional<Member> findMember_Temp = memberService.findOne(saveId);
+    Optional<Member> findMember_Temp = memberService.findOne(saveId);
     //findMember_Temp.ifPresent(member1 -> {
     //  if(member1.getName()){}
     //});
