@@ -1,7 +1,10 @@
 package Hello.HelloSpring.service;
 
 import Hello.HelloSpring.domain.Member;
+import Hello.HelloSpring.repository.MemoryMemberRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -12,10 +15,22 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MemberServiceTest {
 
-  MemberService memberService = new MemberService();
+  MemberService memberService;
+  MemoryMemberRepository memoryMemberRepository;
+
+  @BeforeEach
+  public void  beforeEach(){
+    memoryMemberRepository = new MemoryMemberRepository();
+    memberService = new MemberService(memoryMemberRepository);
+  }
+
+  @AfterEach
+  public void afterEach(){
+    memoryMemberRepository.clearStore();
+  }
 
   @Test
-  void join() {
+  void 회원가입() {
     //given
     Member member = new Member();
     member.setName("hello");
@@ -24,11 +39,6 @@ class MemberServiceTest {
     Long saveId = memberService.join(member);
 
     //then
-    Optional<Member> findMember_Temp = memberService.findOne(saveId);
-    //findMember_Temp.ifPresent(member1 -> {
-    //  if(member1.getName()){}
-    //});
-
     Member findMember = memberService.findOne(saveId).get();
     assertThat(member.getName()).isEqualTo(findMember.getName());
 
